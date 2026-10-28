@@ -54,17 +54,68 @@ Double-click `docs/index.html` to open the offline site. No webserver needed.
 | `--overwrite-existing` | Explicitly overwrite a pre-existing HTML file not created by this skill |
 | `--mermaid-source` | Leave Mermaid fences as code when rendering unavailable (no diagrams) |
 
-### Example project
+### Example projects
+
+The layout is the same for any stack: Markdown in `docs/`, one generated `docs/index.html`.
+
+Game (Unity/Godot/Unreal):
 
 ```text
 my-game/
-├── game/                  # Your Unity/Godot/Unreal/other files
+├── Assets/                # Engine files
 └── docs/
     ├── index.md
     ├── architecture.md
     ├── gameplay.md
     └── index.html          # THE ONLY generated project file
 ```
+
+Website (JS/Node.js/React):
+
+```text
+my-web-app/
+├── package.json
+├── src/
+│   ├── components/
+│   └── server/
+└── docs/
+    ├── README.md           # Becomes the first page
+    ├── api/
+    │   └── endpoints.md
+    ├── frontend/
+    │   ├── components.md
+    │   └── state.md
+    └── index.html          # Generated
+```
+
+Add an npm script so anyone on the team can rebuild:
+
+```json
+{
+  "scripts": {
+    "docs": "python /path/to/offline-docs/scripts/build.py --docs docs --title \"My Web App\""
+  }
+}
+```
+
+Java prototype (Maven/Gradle):
+
+```text
+my-java-prototype/
+├── pom.xml                 # or build.gradle
+├── src/main/java/
+└── docs/
+    ├── index.md
+    ├── domain-model.md     # Mermaid class diagrams render to SVG
+    ├── modules.md
+    └── index.html          # Generated
+```
+
+```bash
+python /path/to/offline-docs/scripts/build.py --docs my-java-prototype/docs --title "Java Prototype"
+```
+
+Exclude `docs/` from what you ship: `.npmignore` or the `files` field in `package.json` for Node packages; for Java, keep it out of `src/main/resources` so it never lands in the JAR.
 
 Generated site resources and search index are embedded directly inside `index.html`. Markdown links targeting other included Markdown pages are rewritten as local navigation within the generated HTML. Rebuild when documentation changes.
 
