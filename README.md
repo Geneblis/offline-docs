@@ -29,6 +29,28 @@ Mermaid CLI may require a browser/Chromium on the machine. Some restricted envir
 
 Copy the complete `offline-docs` folder into a global skills directory recognized by your agent (for example, `~/.claude/skills/offline-docs/` or `~/.agents/skills/offline-docs/`). Retain the subfolders `scripts/` and `assets/`. Agent paths vary by host.
 
+### Documentation contract for agents
+
+Use this contract when asking an agent to write or maintain project documentation. The writing agent checks the implementation and maintains Markdown; Offline Docs renders those sources. Installing this skill does not automatically document code changes.
+
+1. **Choose the source root.** Use the project's existing documentation directory and conventions; otherwise use `docs/` at the project root. Create only pages needed by the project. This suggested layout applies to any language, framework or engine:
+
+   ```text
+   docs/
+   ├── index.md              # Project overview, quick start, links to topic pages
+   ├── setup.md              # Prerequisites, configuration, run/build/test commands
+   ├── architecture.md       # Components, dependencies, flows and key decisions
+   ├── topics/
+   │   └── save-system.md    # One feature, module, subsystem or workflow per page
+   └── assets/               # Local images and diagrams, when needed
+   ```
+
+   Keep an existing root `README.md` as the entry page if already used; otherwise use `index.md`. Link topic pages from that entry page. Reuse the page covering a topic rather than creating a page per code change.
+2. **Make each page readable.** Save UTF-8 `.md` files with stable, descriptive names (prefer `kebab-case`). Start with one `# Descriptive title`, used in the site's navigation, then a short purpose statement. Use `##` and `###` sections for current behavior, usage/configuration with examples, implementation references, verification and known limitations, as applicable. Reference actual project paths and symbols; distinguish implemented behavior from proposals and unverified assumptions.
+3. **Keep links and assets portable.** Use relative links to included `.md` files, optionally with heading anchors, such as `[Usage](topics/save-system.md#usage)`. Resolve paths from the containing Markdown file. Store images under the source root and reference them relatively. The builder discovers `.md` files recursively, excluding hidden, dependency and build-output directories; folder names do not create navigation groups. Use links in the entry page to group related topics. Mermaid fences are optional and require Mermaid CLI to render as diagrams.
+4. **Maintain docs with relevant changes.** When behavior, interfaces, configuration, setup or structure changes, update the affected topic pages, examples, diagrams and implementation references to describe the resulting state. Repair incoming links after renaming or removing a page, and update entry-page links when topics change. Remove obsolete guidance; preserve unrelated content and the project's documentation language. Record checks actually performed and remaining limits; never present an unrun check as passed. Changes with no documentation impact need no new page.
+5. **Hand off to Offline Docs.** Check that linked pages, heading anchors and local images exist within the source set. Supply the source directory and site title, then run the [build command](#build-manually). Edit Markdown and rebuild; `index.html` is generated output. Completion means the affected docs reflect the change and the builder reports `Built:` or `No changes:`. If rendering is blocked, report the updated Markdown and the blocker separately; do not claim the HTML is current. Code changes alone do not update the site, and no background watcher is installed.
+
 ### Build manually
 
 ```bash

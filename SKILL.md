@@ -7,6 +7,10 @@ description: "Render existing project Markdown into one searchable, self-contain
 
 Run the deterministic builder. Never generate HTML or rewrite Markdown yourself. Never read source code for this task. Details and troubleshooting: `README.md`.
 
+## Documentation handoff
+
+For a separate task that creates or maintains project Markdown, direct the writing agent to the [documentation contract](README.md#documentation-contract-for-agents). It defines source layout, page content and change maintenance for any stack. Once the Markdown is ready, use the workflow below to render it. An HTML refresh does not require reorganizing existing documentation.
+
 ## Workflow
 
 1. **Locate Markdown.** Default `docs/`. Ask only if no `docs/` exists or several candidates do.
