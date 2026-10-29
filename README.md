@@ -33,6 +33,8 @@ Copy the complete `offline-docs` folder into a global skills directory recognize
 
 Use this contract when asking an agent to write or maintain project documentation. The writing agent checks the implementation and maintains Markdown; Offline Docs renders those sources. Installing this skill does not automatically document code changes.
 
+Before acting, reuse one short task record for intent, scope and the planned check. For render-only requests, a chat note suffices: do not edit Markdown or inspect project code. For authorized documentation work, record the proposed behavior in the affected page before implementation, clearly marked as planned. Before rendering, reconcile that same page with the actual changes and checks; remove abandoned proposals and obsolete guidance. Reuse existing pages and context instead of creating per-action logs or repeating plans. Inspect only affected code and documentation. For version-dependent API claims, identify the installed version, consult the relevant official reference and cite it once; reuse verified sources while the version and question remain unchanged. Flag unverifiable claims.
+
 1. **Choose the source root.** Use the project's existing documentation directory and conventions; otherwise use `docs/` at the project root. Create only pages needed by the project. This suggested layout applies to any language, framework or engine:
 
    ```text
@@ -50,6 +52,14 @@ Use this contract when asking an agent to write or maintain project documentatio
 3. **Keep links and assets portable.** Use relative links to included `.md` files, optionally with heading anchors, such as `[Usage](topics/save-system.md#usage)`. Resolve paths from the containing Markdown file. Store images under the source root and reference them relatively. The builder discovers `.md` files recursively, excluding hidden, dependency and build-output directories; folder names do not create navigation groups. Use links in the entry page to group related topics. Mermaid fences are optional and require Mermaid CLI to render as diagrams.
 4. **Maintain docs with relevant changes.** When behavior, interfaces, configuration, setup or structure changes, update the affected topic pages, examples, diagrams and implementation references to describe the resulting state. Repair incoming links after renaming or removing a page, and update entry-page links when topics change. Remove obsolete guidance; preserve unrelated content and the project's documentation language. Record checks actually performed and remaining limits; never present an unrun check as passed. Changes with no documentation impact need no new page.
 5. **Hand off to Offline Docs.** Check that linked pages, heading anchors and local images exist within the source set. Supply the source directory and site title, then run the [build command](#build-manually). Edit Markdown and rebuild; `index.html` is generated output. Completion means the affected docs reflect the change and the builder reports `Built:` or `No changes:`. If rendering is blocked, report the updated Markdown and the blocker separately; do not claim the HTML is current. Code changes alone do not update the site, and no background watcher is installed.
+
+### Agent execution budget
+
+Normal builds load `SKILL.md` and execute the builder, without reading this README, project source, assets or generated HTML. Read the documentation contract only for content authoring, or the relevant troubleshooting material after an error. Run once; after diagnosing and correcting a concrete cause, allow at most one corrective retry per request. Existing authorization remains valid; otherwise obtain it before installing dependencies, overwriting foreign HTML or degrading Mermaid to source blocks.
+
+Do not open the generated site, inspect HTML, take screenshots or run browser tests unless the user explicitly requests it, even for the first build. Mermaid CLI may still use its internal browser to produce SVGs. A successful build verifies conversion, not factual correctness. Report the final builder status or the actual error and blocker. These limits govern documentation builds, not an explicitly requested builder development/test task.
+
+This uses concise instructions and conditional reference loading as described in [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills). The builder remains deterministic; lower instruction volume and fewer unnecessary actions reduce avoidable context usage, but do not guarantee a fixed token cost per task. Installing this skill does not enforce documentation rules in unrelated tasks.
 
 ### Build manually
 
