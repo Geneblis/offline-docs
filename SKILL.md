@@ -7,9 +7,9 @@ description: "Build or refresh a searchable, self-contained offline docs/index.h
 
 ## Document before acting
 
-Before execution, record intent, scope and check in one short task note (reuse existing context; chat suffices for render-only work). Close with actual outcome and limits; never describe planned work as completed. No per-command logs or duplicate plans.
+Record intent, scope and check once (chat suffices for render-only work); close with actual outcome and limits. Reuse context; avoid duplicate plans and per-command logs.
 
-When authoring is in scope, first record the proposed change in the affected Markdown, then reconcile it with implementation and checks before rendering. Read only the [documentation contract](README.md#documentation-contract-for-agents); otherwise read README only for a relevant error. Render-only requests never edit Markdown or audit source code.
+For authoring, read the [documentation contract](README.md#documentation-contract-for-agents): use numbered source notes and relevant production images. Record proposed changes in the affected Markdown; reconcile with implementation and checks before rendering. Otherwise read README only for relevant errors. Render-only work never edits Markdown or audits source code.
 
 ## Render
 
